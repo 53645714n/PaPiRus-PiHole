@@ -1,9 +1,8 @@
 import os
 import json
 import urllib2
-from inky import InkyPHAT
+from papirus import PapirusComposite
 from PIL import Image, ImageFont, ImageDraw
-from font_fredoka_one import FredokaOne
 
 # Set current directory
 
@@ -11,13 +10,13 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Load graphic
 
-img = Image.open("./logo.png")
-draw = ImageDraw.Draw(img)
+img = './pihole-bw.bmp'
+#draw = ImageDraw.Draw(img)
 
 # get api data
 
 try:
-  f = urllib2.urlopen('http://pi.hole/admin/api.php')
+  f = urllib2.urlopen('http://192.168.1.104/admin/api.php')
   json_string = f.read()
   parsed_json = json.loads(json_string)
   adsblocked = parsed_json['ads_blocked_today']
@@ -27,15 +26,20 @@ except:
   queries = '?'
   adsblocked = '?'
   ratio = '?'
+  ratioblocked ='?'
 
-font = ImageFont.truetype(FredokaOne, 32)
+# Calling PapirusComposite this way will mean nothing is written to the screen until WriteAll is called
+textNImg = PapirusComposite(False)
 
-inky_display = InkyPHAT("red")
-inky_display.set_border(inky_display.WHITE)
+# Write text to the screen at selected point, with an Id
+# Nothing will show on the screen
+textNImg.AddText(str(adsblocked), 5, 5, Id="blocked", size=45 )
+textNImg.AddText(str("%.1f" % round(ratioblocked,2)) +"%", 5, 45, Id="percentage", size=45 )
 
-draw.text((20,20), str(adsblocked), inky_display.BLACK, font)
-draw.text((20,50), str("%.1f" % round(ratioblocked,2)) + "%", inky_display.BLACK, font)
+# Add image
+# Nothing will show on the screen
+# textNImg.AddImg(path, posX,posY,(w,h),id)
+textNImg.AddImg(img,120,5,(80,80), Id="pihole")
 
-inky_display.set_image(img)
-
-inky_display.show()
+# Now display all elements on the screen
+textNImg.WriteAll()
