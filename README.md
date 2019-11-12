@@ -1,4 +1,4 @@
-# Inky Hole
+# PaPiRus-PiHole
 
 Display the **number of blocked requests, and filtered traffic**, from [Pi-Hole](https://pi-hole.net), on [PaPiRus](https://github.com/PiSupply/PaPiRus).
 
