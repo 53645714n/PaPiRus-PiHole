@@ -19,7 +19,7 @@ crontab -e
 Add the following line:
 
 ```
-*/30 * * * * python /home/pi/inky-hole/main.py
+*/30 * * * * python /home/PaPiRus-PiHole/main.py
 ```
 
 Enjoy!
