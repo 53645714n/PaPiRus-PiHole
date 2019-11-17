@@ -63,17 +63,17 @@ def main(argv):
 
 # get api data
 
-try:
-  f = urllib2.urlopen('http://pi.hole/admin/api.php')
-  json_string = f.read()
-  parsed_json = json.loads(json_string)
-  #adsblocked = parsed_json['ads_blocked_today']
-  ratioblocked = parsed_json['ads_percentage_today']
-  f.close()
-except:
-  queries = '?'
-  adsblocked = '?'
-  ratio = '?'
+#try:
+#  f = urllib2.urlopen('http://pi.hole/admin/api.php')
+#  json_string = f.read()
+#  parsed_json = json.loads(json_string)
+#  #adsblocked = parsed_json['ads_blocked_today']
+#  ratioblocked = parsed_json['ads_percentage_today']
+#  f.close()
+#except:
+#  queries = '?'
+#  adsblocked = '?'
+#  ratio = '?'
 
 def demo(papirus):
     """simple partial update demo - draw a clock"""
@@ -94,6 +94,7 @@ def demo(papirus):
     draw.rectangle((0, 0, width, height), fill=WHITE, outline=WHITE)
     previous_second = 0
     prev_adsblocked = 0
+
     while True:
         while True:
 	# get api data
@@ -115,17 +116,17 @@ def demo(papirus):
                 break
             time.sleep(0.1)
 
-	if adsblocked != prev_adsblocked:
-            #draw.rectangle((2, 2, width - 2, height - 2), fill=WHITE, outline=BLACK)
+        if adsblocked != prev_adsblocked:
+            draw.rectangle((2, 2, width - 2, height - 2), fill=WHITE, outline=BLACK)
             #draw.text((10, clock_font_size + 10), '{y:04d}-{m:02d}-{d:02d}'.format(y=now.year, m=now.month, d=now.day), fill=BLACK, font=date_font)
             draw.text((10, clock_font_size+10), str(ratioblocked), fill=BLACK, font=date_font)
             draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
-            adsblocked = prev_adsblocked
-        else:
+            prev_adsblocked = adsblocked
+       # else:
             #draw.rectangle((5, 10, width - 5, 10 + clock_font_size), fill=WHITE, outline=WHITE)
-#	    draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
-            draw.text((10, clock_font_size+10), str(ratioblocked), fill=BLACK, font=date_font)
-            draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
+	    #draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
+            #draw.text((10, clock_font_size+10), str(ratioblocked), fill=BLACK, font=date_font)
+            #draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
 
         # display image on the panel
             papirus.display(image)
@@ -133,7 +134,7 @@ def demo(papirus):
                 papirus.update()    # full update every minute
             else:
                 papirus.partial_update()
-        	previous_second = now.second
+            previous_second = now.second
 
 # main
 if "__main__" == __name__:
