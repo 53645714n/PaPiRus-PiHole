@@ -1,6 +1,7 @@
 import os
 import json
 import urllib2
+import datetime
 from papirus import PapirusComposite
 from PIL import Image, ImageFont, ImageDraw
 
@@ -12,6 +13,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 img = './pihole-bw.bmp'
 #draw = ImageDraw.Draw(img)
+
+# get date
+update = datetime.datetime.now()
 
 # get api data
 
@@ -40,6 +44,10 @@ textNImg.AddText(str("%.1f" % round(ratioblocked,2)) +"%", 5, 45, Id="percentage
 # Nothing will show on the screen
 # textNImg.AddImg(path, posX,posY,(w,h),id)
 textNImg.AddImg(img,120,5,(80,80), Id="pihole")
+
+# Write text to the screen at selected point, with an Id
+# Nothing will show on the screen
+textNImg.AddText(str(update), 100, 85, Id="update", size=8 )
 
 # Now display all elements on the screen
 textNImg.WriteAll()
