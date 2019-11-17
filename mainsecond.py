@@ -94,23 +94,22 @@ def demo(papirus):
     draw.rectangle((0, 0, width, height), fill=WHITE, outline=WHITE)
     previous_second = 0
     prev_adsblocked = 0
-   # adsblocked = parsed_json['ads_blocked_today']
-# get api data
-
-try:
-  f = urllib2.urlopen('http://pi.hole/admin/api.php')
-  json_string = f.read()
-  parsed_json = json.loads(json_string)
-  adsblocked = parsed_json['ads_blocked_today']
-  ratioblocked = parsed_json['ads_percentage_today']
-  f.close()
-except:
-  queries = '?'
-  adsblocked = '?'
-  ratio = '?'
-
     while True:
         while True:
+	# get api data
+
+	    try:
+	     f = urllib2.urlopen('http://pi.hole/admin/api.php')
+	     json_string = f.read()
+	     parsed_json = json.loads(json_string)
+	     adsblocked = parsed_json['ads_blocked_today']
+	     ratioblocked = parsed_json['ads_percentage_today']
+	     f.close()
+	    except:
+	     queries = '?'
+	     adsblocked = '?'
+	     ratio = '?'
+
             now = datetime.today()
             if now.second != previous_second:
                 break
@@ -125,13 +124,15 @@ except:
         else:
             #draw.rectangle((5, 10, width - 5, 10 + clock_font_size), fill=WHITE, outline=WHITE)
 #	    draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
+            draw.text((10, clock_font_size+10), str(ratioblocked), fill=BLACK, font=date_font)
+            draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
 
         # display image on the panel
-        	papirus.display(image)
-        	if now.second < previous_second:
-        	    papirus.update()    # full update every minute
-        	else:
-        	    papirus.partial_update()
+            papirus.display(image)
+            if now.second < previous_second:
+                papirus.update()    # full update every minute
+            else:
+                papirus.partial_update()
         	previous_second = now.second
 
 # main
