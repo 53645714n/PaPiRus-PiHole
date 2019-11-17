@@ -114,12 +114,12 @@ def demo(papirus):
             now = datetime.today()
             if now.second != previous_second:
                 break
-            time.sleep(0.1)
+            time.sleep(1)
 
         if adsblocked != prev_adsblocked:
             draw.rectangle((2, 2, width - 2, height - 2), fill=WHITE, outline=BLACK)
             #draw.text((10, clock_font_size + 10), '{y:04d}-{m:02d}-{d:02d}'.format(y=now.year, m=now.month, d=now.day), fill=BLACK, font=date_font)
-            draw.text((10, clock_font_size+10), str(ratioblocked), fill=BLACK, font=date_font)
+            draw.text((10, clock_font_size+10),(str("%.1f" % round(ratioblocked,2)) +"%", fill=BLACK, font=date_font)
             draw.text((5, 10), str(adsblocked), fill=BLACK, font=clock_font)
             prev_adsblocked = adsblocked
        # else:
